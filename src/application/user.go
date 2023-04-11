@@ -11,11 +11,16 @@ import (
 
 type User struct {
 	Conn    *net.TCPConn
-	Level   uint   // 权限
+	Level   uint   // 权限  0 admin , 1 user , 2 guest
 	Addr    string // 地址
-	LoginID string // 登录ID
+	ID      string // 系统自动生成的ID
 	Name    string // 对外显示名字
-	Pwd     string // 密码
+	LoginID string // 登录ID
+	Pwd     string // 登录密码
+}
+
+func (u *User) GetID() string {
+	return u.ID
 }
 
 func NewUser(conn *net.TCPConn) inface.IUser {

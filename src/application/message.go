@@ -9,9 +9,10 @@ import (
 */
 
 type Message struct {
-	Data    string
-	Command string
-	DataLen uint32
+	Data       string
+	Command    string
+	DataLen    uint32
+	MaxDataLen uint32
 }
 
 // NewMessage 创建新的消息

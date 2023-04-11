@@ -15,29 +15,6 @@ func main() {
 
 }
 
-//// PingRouter ping test 自定义路由
-//type PingRouter struct {
-//	application.BaseRouter //一定要先基础BaseRouter
-//}
-//
-//// Handle 登录
-//func (r *PingRouter) Handle(request inface.IRequest) {
-//	msg := request.GetMsg()
-//	conn := request.GetConnection()
-//	cmd := msg.GetCommand()
-//	data := msg.GetData()
-//	user := conn.GetUser()
-//	switch cmd {
-//	case "@Login":
-//		user.SetLoginID(data)
-//		fmt.Println(user.GetLoginID())
-//
-//	case "@Pwd":
-//		user.SetPwd(data)
-//		fmt.Println(user.GetPwd())
-//	}
-//}
-
 // PingRouter 自定义路由
 type PingRouter struct {
 	application.BaseRouter
@@ -56,15 +33,10 @@ func (pr *PingRouter) PreHandle(request inface.IRequest) {
 	switch cmd {
 	case "@Login": // 登录用户名
 		user.SetLoginID(data)
-		fmt.Println(user.GetLoginID())
 
 	case "@Pwd": // 密码
 		user.SetPwd(data)
-		fmt.Println(user.GetPwd())
-
-
 	}
-
 
 	// fmt.Println("Call Router PreHandle...")
 	// _, err := request.GetConnection().GetTCPConnection().Write([]byte("Before Ping....  |  "))
@@ -77,17 +49,23 @@ func (pr *PingRouter) PreHandle(request inface.IRequest) {
 // Handle 测试路由
 func (pr *PingRouter) Handle(request inface.IRequest) {
 	fmt.Println("Call Router Handle...")
-	_, err := request.GetConnection().GetTCPConnection().Write([]byte("....Ping....Ping....Ping....  |  "))
-	if err != nil {
-		fmt.Println("Router Handle Write Error: ", err)
-	}
+
+	//_, err := request.GetConnection().GetTCPConnection().Write([]byte("....Ping....Ping....Ping....  |  "))
+	//if err != nil {
+	//	fmt.Println("Router Handle Write Error: ", err)
+	//}
 }
 
-// PostHandle 测试路由
-func (pr *PingRouter) PostHandle(request inface.IRequest) {
-	fmt.Println("Call Router PostHandle...")
-	_, err := request.GetConnection().GetTCPConnection().Write([]byte("After Ping...."))
-	if err != nil {
-		fmt.Println("Router PostHandle Write Error: ", err)
-	}
+//
+//// PostHandle 测试路由
+//func (pr *PingRouter) PostHandle(request inface.IRequest) {
+//	fmt.Println("Call Router PostHandle...")
+//	_, err := request.GetConnection().GetTCPConnection().Write([]byte("After Ping...."))
+//	if err != nil {
+//		fmt.Println("Router PostHandle Write Error: ", err)
+//	}
+//}
+
+type PageIndex struct {
+	inface.IPage
 }

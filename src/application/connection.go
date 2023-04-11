@@ -2,7 +2,7 @@ package application
 
 import (
 	"TelnetBBS/src/inface"
-	"TelnetBBS/src/util"
+	"TelnetBBS/src/utils"
 	"bufio"
 	"fmt"
 	"net"
@@ -26,6 +26,10 @@ type Connection struct {
 
 	// 用户属性对象
 	User inface.IUser
+}
+
+func (c *Connection) GetConnID() uint32 {
+	return c.ConnID
 }
 
 func NewConnection(conn *net.TCPConn, connID uint32, router inface.IRouter) *Connection {
@@ -70,6 +74,7 @@ func (c *Connection) Reader() {
 	fmt.Println("Reader Goroutine is  running")
 	defer fmt.Println(c.RemoteAddr().String(), " conn reader exit!")
 	defer c.Stop()
+
 	c.Conn.Write([]byte("Welcome to my Telnet server!\r\n"))
 
 	reader := bufio.NewReader(c.Conn)
@@ -87,45 +92,44 @@ func (c *Connection) Reader() {
 		}
 
 		// 解析传输过来的消息
-		if cmd, cmdData, bo := util.GetCommand(input); bo == true {
-			msg := NewMessage(cmd, cmdData)
-			req := Request{
-				Conn: c,
-				Msg:  msg,
-				// Data: cmdData,
-			}
-
-			fmt.Println("Command:", msg.GetCommand())
-			fmt.Println("CommandData:", msg.GetData())
-
-			// // 从路由Routers 中找到注册绑定Conn的对应Handle
-			go func(request inface.IRequest) {
-				//执行注册的路由方法
-				c.Router.PreHandle(request)
-				c.Router.Handle(request)
-				c.Router.PostHandle(request)
-			}(&req)
-
+		cmd, cmdData, _ := utils.GetCommand(input)
+		msg := NewMessage(cmd, cmdData)
+		req := Request{
+			Conn: c,
+			Msg:  msg,
+			// Data: cmdData,
 		}
-		//else {
-		//	msg := NewMessage("", cmdData)
-		//	fmt.Println("Data:", msg.GetData())
-		//
-		//	req := Request{
-		//		Conn: c,
-		//		Msg:  msg,
-		//	}
-		//
-		//	// 从路由Routers 中找到注册绑定Conn的对应Handle
-		//	//go func(request inface.IRequest) {
-		//	//	//执行注册的路由方法
-		//	//	c.Router.PreHandle(request)
-		//	//	c.Router.Handle(request)
-		//	//	c.Router.PostHandle(request)
-		//	//}(&req)
-		//}
+		fmt.Println(req.Conn.RemoteAddr().String())
+		fmt.Println("Command:", msg.GetCommand())
+		fmt.Println("CommandData:", msg.GetData())
 
+		// // 从路由Routers 中找到注册绑定Conn的对应Handle
+		go func(request inface.IRequest) {
+			//执行注册的路由方法
+			c.Router.PreHandle(request)
+			c.Router.Handle(request)
+			c.Router.PostHandle(request)
+		}(&req)
 	}
+
+	//} else {
+	//	msg := NewMessage("", cmdData)
+	//	fmt.Println("Data:", msg.GetData())
+	//
+	//	req := Request{
+	//		Conn: c,
+	//		Msg:  msg,
+	//	}
+	//}
+	//
+	//	// 从路由Routers 中找到注册绑定Conn的对应Handle
+	//	//go func(request inface.IRequest) {
+	//	//	//执行注册的路由方法
+	//	//	c.Router.PreHandle(request)
+	//	//	c.Router.Handle(request)
+	//	//	c.Router.PostHandle(request)
+	//	//}(&req)
+	//}
 
 }
 

@@ -2,5 +2,7 @@
     "Name": "TelnetBBS",
     "IP": "127.0.0.1",
     "Port" : "8899",
-    "MaxPackageSize" : "512"
+    "MaxPackageSize" : 512,
+    "WorkerPoolSize": 20,
+    "MaxWorkerTaskLen": 20
 }

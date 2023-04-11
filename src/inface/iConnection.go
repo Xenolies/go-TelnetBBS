@@ -19,6 +19,7 @@ type IConnection interface {
 	GetTCPConnection() *net.TCPConn
 
 	GetUser() IUser
+	GetConnID() uint32
 
 	// 命令处理线程
 	// CommandHandle()
