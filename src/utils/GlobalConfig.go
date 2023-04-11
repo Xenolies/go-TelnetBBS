@@ -13,6 +13,7 @@ type GlobalConfig struct {
 	Name             string
 	IP               string
 	Port             string
+	MaxConn          int
 	MaxPackageSize   uint32
 	WorkerPoolSize   uint32
 	MaxWorkerTaskLen uint32
@@ -25,6 +26,7 @@ func init() {
 		Name:             "TelnetBBS",
 		IP:               "127.0.0.1",
 		Port:             "8899",
+		MaxConn:          20,
 		MaxPackageSize:   512,
 		WorkerPoolSize:   20,
 		MaxWorkerTaskLen: 20,

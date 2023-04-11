@@ -9,7 +9,7 @@ import (
 func main() {
 	s := application.NewServer()
 
-	s.AddRouter(&PingRouter{})
+	s.AddRouter("@Login", &PingRouter{})
 
 	s.Serve()
 

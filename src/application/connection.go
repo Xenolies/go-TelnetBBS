@@ -26,21 +26,25 @@ type Connection struct {
 
 	// 用户属性对象
 	User inface.IUser
+
+	// 消息处理 Command 和对应的处理业务的关系
+	MsgHandler inface.IMsgHandler
 }
 
 func (c *Connection) GetConnID() uint32 {
 	return c.ConnID
 }
 
-func NewConnection(conn *net.TCPConn, connID uint32, router inface.IRouter) *Connection {
+func NewConnection(conn *net.TCPConn, connID uint32, router inface.IRouter, msgHandler inface.IMsgHandler) *Connection {
 	return &Connection{
-		Conn:     conn,
-		ConnID:   connID,
-		isClosed: false,
-		ExitChan: make(chan bool, 1),
-		MsgChan:  make(chan string),
-		User:     NewUser(conn),
-		Router:   router,
+		Conn:       conn,
+		ConnID:     connID,
+		isClosed:   false,
+		ExitChan:   make(chan bool, 1),
+		MsgChan:    make(chan string),
+		User:       NewUser(conn),
+		Router:     router,
+		MsgHandler: msgHandler,
 	}
 }
 
@@ -71,6 +75,7 @@ func (c *Connection) Writer() {
 }
 
 func (c *Connection) Reader() {
+
 	fmt.Println("Reader Goroutine is  running")
 	defer fmt.Println(c.RemoteAddr().String(), " conn reader exit!")
 	defer c.Stop()
@@ -104,32 +109,24 @@ func (c *Connection) Reader() {
 		fmt.Println("CommandData:", msg.GetData())
 
 		// // 从路由Routers 中找到注册绑定Conn的对应Handle
-		go func(request inface.IRequest) {
-			//执行注册的路由方法
-			c.Router.PreHandle(request)
-			c.Router.Handle(request)
-			c.Router.PostHandle(request)
-		}(&req)
-	}
+		//go func(request inface.IRequest) {
+		//	//执行注册的路由方法
+		//	c.Router.PreHandle(request)
+		//	c.Router.Handle(request)
+		//	c.Router.PostHandle(request)
+		//}(&req)
+		// 判断工作池是否存在,存在则将消息交给工作池处理
+		if utils.Gc.WorkerPoolSize > 0 {
+			// 开启工作处将消息交给工作池处理
+			c.MsgHandler.SendMsgToTaskQueue(&req)
+		} else {
+			//从路由 Routers 中找到注册绑定Conn的对应Handle
+			// 根据绑定好的MsgID, 传入消息处理模块 找到对应的处理业务
+			go c.MsgHandler.DoMsgHandler(&req)
 
-	//} else {
-	//	msg := NewMessage("", cmdData)
-	//	fmt.Println("Data:", msg.GetData())
-	//
-	//	req := Request{
-	//		Conn: c,
-	//		Msg:  msg,
-	//	}
-	//}
-	//
-	//	// 从路由Routers 中找到注册绑定Conn的对应Handle
-	//	//go func(request inface.IRequest) {
-	//	//	//执行注册的路由方法
-	//	//	c.Router.PreHandle(request)
-	//	//	c.Router.Handle(request)
-	//	//	c.Router.PostHandle(request)
-	//	//}(&req)
-	//}
+		}
+
+	}
 
 }
 

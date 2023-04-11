@@ -71,8 +71,8 @@ func (mh *MsgHandle) StartWorkPool() {
 }
 
 // 启动Worker工作流程
-func (mh *MsgHandle) statOneWorker(workrID int, taskQueue chan inface.IRequest) {
-	fmt.Println("Start WorkerID: ", workrID, "Start!!")
+func (mh *MsgHandle) statOneWorker(workerID int, taskQueue chan inface.IRequest) {
+	fmt.Println("Start WorkerID: ", workerID, "Start!!")
 
 	// 阻塞等待消息
 	for {
