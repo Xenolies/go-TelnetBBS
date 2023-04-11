@@ -2,8 +2,15 @@
     "Name": "TelnetBBS",
     "IP": "127.0.0.1",
     "Port" : "8899",
-    "MaxConn ": 20,
+    "MaxConn ": 2,
     "MaxPackageSize" : 512,
-    "WorkerPoolSize": 20,
-    "MaxWorkerTaskLen": 20
+    "WorkerPoolSize": 3,
+    "MaxWorkerTaskLen": 20,
+    "DatabaseDriver": "mysql",
+    "DatabaseName":  "go_project",
+    "DatabaseUserName" : "root",
+    "DatabaseUserPwd" : "123456",
+    "DatabasePort" : 3306,
+    "DatabaseEncoding" : "utf8"
 }
+

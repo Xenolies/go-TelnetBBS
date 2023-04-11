@@ -69,7 +69,7 @@ func (s *Server) Start() {
 				continue
 			}
 
-			dealConn := NewConnection(conn, ConnID, s.Router, s.MsgHandler)
+			dealConn := NewConnection(s, conn, ConnID, s.Router, s.MsgHandler)
 			ConnID++
 
 			// 建立链接前判断是否超过最大链接个数

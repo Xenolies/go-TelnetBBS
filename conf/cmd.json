@@ -1,3 +1,3 @@
 {
-    "Command":["@Login","@Pwd"]
+    "Command":["@Login","@Pwd","@User"]
 }

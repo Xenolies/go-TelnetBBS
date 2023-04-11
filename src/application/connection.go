@@ -10,6 +10,9 @@ import (
 )
 
 type Connection struct {
+	// 当前连接所在Server
+	TcpServer inface.IServer
+
 	Conn *net.TCPConn
 
 	//当前连接的ID 也可以称作为SessionID，ID全局唯一
@@ -35,8 +38,9 @@ func (c *Connection) GetConnID() uint32 {
 	return c.ConnID
 }
 
-func NewConnection(conn *net.TCPConn, connID uint32, router inface.IRouter, msgHandler inface.IMsgHandler) *Connection {
-	return &Connection{
+func NewConnection(server inface.IServer, conn *net.TCPConn, connID uint32, router inface.IRouter, msgHandler inface.IMsgHandler) *Connection {
+	c := &Connection{
+		TcpServer:  server,
 		Conn:       conn,
 		ConnID:     connID,
 		isClosed:   false,
@@ -46,6 +50,10 @@ func NewConnection(conn *net.TCPConn, connID uint32, router inface.IRouter, msgH
 		Router:     router,
 		MsgHandler: msgHandler,
 	}
+	// 将Conn加入到ConnManager属性中
+	c.TcpServer.GetConnMgr().Add(c)
+
+	return c
 }
 
 func (c *Connection) GetUser() inface.IUser {
