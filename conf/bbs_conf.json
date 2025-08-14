@@ -7,9 +7,9 @@
     "WorkerPoolSize": 3,
     "MaxWorkerTaskLen": 20,
     "DatabaseDriver": "mysql",
-    "DatabaseName":  "go_project",
+    "DatabaseName":  "go_telnetBBS",
     "DatabaseUserName" : "root",
-    "DatabaseUserPwd" : "123456",
+    "DatabaseUserPwd" : "20021121",
     "DatabasePort" : 3306,
     "DatabaseEncoding" : "utf8"
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="RemoteTargetsManager">
+    <targets>
+      <target name="pan@raspberrypi5:22" type="ssh/sftp" uuid="8af84b5b-94df-459b-b00e-c19de320e612">
+        <config>
+          <option name="projectRootOnTarget" value="/home/pan/go-TelnetBBS" />
+          <option name="serverName" value="pan@raspberrypi5:22 password" />
+        </config>
+        <ContributedStateBase type="GoLanguageRuntime">
+          <config />
+        </ContributedStateBase>
+      </target>
+    </targets>
+  </component>
+</project>

@@ -10,8 +10,8 @@ import (
 
 type Message struct {
 	Data       string
-	Command    string
-	DataLen    uint32
+	Command    string // 用户的指令
+	DataLen    uint32 //数据长度
 	MaxDataLen uint32
 }
 
