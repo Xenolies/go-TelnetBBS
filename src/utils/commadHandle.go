@@ -10,6 +10,7 @@ import (
 
 // GetCommand 获取输入Command
 func GetCommand(input string) (string, string, bool) {
+
 	return SubStrRange(input, ' ')
 }
 

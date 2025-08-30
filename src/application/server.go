@@ -5,16 +5,16 @@ import (
 	"TelnetBBS/src/utils"
 	"fmt"
 	"net"
-	"os"
 )
 
 type Server struct {
-	Name      string
-	IpVersion string
-	IP        string
-	Port      string
+	Name      string // 服务器名称
+	IpVersion string // 服务器IP版本
+	IP        string // 服务器IP
+	Port      string // 服务器监听端口
+
 	//当前Server由用户绑定的回调router,也就是Server注册的链接对应的处理业务
-	Router inface.IRouter
+	//Router inface.IRouter
 
 	// 该Server的链接控制器
 	ConnManager inface.IConnectionManager
@@ -30,10 +30,10 @@ func (s *Server) AddRouter(cmd string, router inface.IRouter) {
 
 func NewServer() inface.IServer {
 	return &Server{
-		IpVersion:   "tcp4",
-		IP:          utils.Gc.IP,
-		Port:        utils.Gc.Port,
-		Router:      nil,
+		IpVersion: "tcp4",
+		IP:        utils.Gc.IP,
+		Port:      utils.Gc.Port,
+		//Router:      nil,
 		ConnManager: NewConnManager(),
 		MsgHandler:  NewMsgHandle(),
 	}
@@ -52,7 +52,7 @@ func (s *Server) Start() {
 		listener, err := net.ListenTCP(s.IpVersion, addr)
 		if err != nil {
 			fmt.Println("Error listening:", err.Error())
-			os.Exit(1)
+			return
 		}
 
 		//defer listener.Close()
@@ -69,7 +69,7 @@ func (s *Server) Start() {
 				continue
 			}
 
-			dealConn := NewConnection(s, conn, ConnID, s.Router, s.MsgHandler)
+			dealConn := NewConnection(s, conn, ConnID, s.MsgHandler)
 			ConnID++
 
 			// 建立链接前判断是否超过最大链接个数
@@ -96,7 +96,9 @@ func (s *Server) Serve() {
 }
 
 func (s *Server) Close() {
-
+	// 服务器终止
+	fmt.Println("[STOP]Server is STOP!")
+	s.ConnManager.ClearConn()
 }
 
 // GetConnMgr 返回当前Server中的ConnManager

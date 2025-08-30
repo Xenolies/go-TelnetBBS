@@ -7,7 +7,7 @@ import (
 type Request struct {
 	Conn inface.IConnection
 	Msg  inface.IMessage
-// 	Data string
+	// 	Data string
 }
 
 func (r *Request) GetConnection() inface.IConnection {
@@ -15,14 +15,13 @@ func (r *Request) GetConnection() inface.IConnection {
 }
 
 func (r *Request) GetData() string {
-	//return r.Msg.GetData()
 	return r.Msg.GetData()
 }
 
-func (r *Request) GetCommand()string{
+func (r *Request) GetCommand() string {
 	return r.Msg.GetCommand()
 }
 
-//func (r *Request) GetMsg() inface.IMessage {
-//	return r.Msg
-//}
+func (r *Request) GetMsg() inface.IMessage {
+	return r.Msg
+}

@@ -1,7 +1,7 @@
 package inface
 
 /*
-请求接口 
+请求接口
 */
 
 type IRequest interface {
@@ -10,7 +10,7 @@ type IRequest interface {
 	// GetData 得到请求的消息
 	GetData() string
 
-	GetCommand()string
+	GetCommand() string
 
-	// GetMsg() IMessage
+	GetMsg() IMessage
 }

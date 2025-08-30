@@ -36,6 +36,7 @@ func (mh *MsgHandle) DoMsgHandler(request inface.IRequest) {
 	handler, ok := mh.Apis[request.GetCommand()]
 	if !ok {
 		fmt.Println("Api MsgID: ", request.GetCommand(), " Not Found")
+		fmt.Println(ok)
 		return
 	}
 	// 根据MsgID执行对应Router业务
